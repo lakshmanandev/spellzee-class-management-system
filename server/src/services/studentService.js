@@ -1,0 +1,5 @@
+import bcrypt from 'bcryptjs'; import User from '../models/User.js'; import AppError from '../utils/AppError.js';
+export async function listStudents(query) { const filter = { role: 'STUDENT' }; if (query) filter.$or = [{ name: { $regex: query, $options: 'i' } }, { email: { $regex: query, $options: 'i' } }, { course: { $regex: query, $options: 'i' } }]; return User.find(filter).sort({ createdAt: -1 }); }
+export async function createStudent(data) { if (!data.password) throw new AppError('Password is required'); return User.create({ ...data, passwordHash: await bcrypt.hash(data.password, 12), role: 'STUDENT' }); }
+export async function updateStudent(id, data) { const update = { ...data }; delete update.password; if (data.password) update.passwordHash = await bcrypt.hash(data.password, 12); const student = await User.findOneAndUpdate({ _id: id, role: 'STUDENT' }, update, { new: true, runValidators: true }); if (!student) throw new AppError('Student not found', 404); return student; }
+export async function getStudent(id) { const student = await User.findOne({ _id: id, role: 'STUDENT' }); if (!student) throw new AppError('Student not found', 404); return student; }

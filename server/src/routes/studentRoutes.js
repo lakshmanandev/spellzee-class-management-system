@@ -1,0 +1,2 @@
+import { Router } from 'express'; import * as c from '../controllers/studentController.js'; import { authenticate, authorize } from '../middleware/auth.js'; import { validate } from '../middleware/validate.js'; import { studentSchema } from '../validators/index.js';
+const router = Router(); router.use(authenticate, authorize('ADMIN')); router.get('/', c.list); router.post('/', validate(studentSchema), c.create); router.get('/:id', c.get); router.put('/:id', validate(studentSchema), c.update); router.delete('/:id', c.deactivate); export default router;

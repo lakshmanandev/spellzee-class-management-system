@@ -1,0 +1,2 @@
+import jwt from 'jsonwebtoken'; import User from '../models/User.js';
+export function setupSockets(io) { io.use(async (socket, next) => { try { const { id, role } = jwt.verify(socket.handshake.auth?.token, process.env.JWT_SECRET); const user = await User.findById(id); if (!user || role !== 'STUDENT' || user.role !== 'STUDENT') return next(new Error('Unauthorized')); socket.user = user; next(); } catch { next(new Error('Unauthorized')); } }); io.on('connection', socket => { socket.join(`student:${socket.user._id}`); }); }

@@ -1,0 +1,2 @@
+import 'dotenv/config'; import http from 'http'; import { Server } from 'socket.io'; import app from './app.js'; import { connectDatabase } from './config/db.js'; import { setupSockets } from './sockets/index.js';
+const server = http.createServer(app); const io = new Server(server, { cors: { origin: process.env.CLIENT_URL, credentials: true } }); app.set('io', io); setupSockets(io); connectDatabase().then(() => server.listen(process.env.PORT || 5000, () => console.log(`API running on ${process.env.PORT || 5000}`))).catch(err => { console.error(err); process.exit(1); });

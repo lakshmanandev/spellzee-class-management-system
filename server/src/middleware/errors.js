@@ -1,0 +1,2 @@
+export function notFound(req, _res, next) { const error = new Error(`Route ${req.method} ${req.originalUrl} not found`); error.statusCode = 404; next(error); }
+export function errorHandler(err, _req, res, _next) { const status = err.statusCode || (err.code === 11000 ? 409 : 500); const message = err.code === 11000 ? 'An account with this email already exists' : err.message || 'Something went wrong'; res.status(status).json({ success: false, message, errors: err.errors }); }

@@ -1,0 +1,2 @@
+import User from '../models/User.js'; import AppError from '../utils/AppError.js'; import { signToken } from '../utils/token.js';
+export async function login({ email, password }) { const user = await User.findOne({ email: email.toLowerCase() }).select('+passwordHash'); if (!user || !(await user.comparePassword(password)) || user.status !== 'ACTIVE') throw new AppError('Invalid email or password', 401); const safeUser = await User.findById(user._id); return { token: signToken(user), user: safeUser }; }
