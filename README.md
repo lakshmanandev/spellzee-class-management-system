@@ -71,7 +71,7 @@ The login endpoint verifies bcrypt hashes and returns a signed, expiring JWT. Th
 
 ## Deployment
 
-Deploy `client` to Vercel/Netlify and set `VITE_API_URL`/`VITE_SOCKET_URL` to the deployed API. Deploy `server` to Render/Railway, configure `MONGODB_URI`, `JWT_SECRET`, `JWT_EXPIRES_IN`, `CLIENT_URL` and `PORT`, and allow the frontend URL in CORS. Use MongoDB Atlas for production and run `npm run seed` only against a non-production demo database.
+Deploy `client` to Vercel/Netlify and set `VITE_API_URL`/`VITE_SOCKET_URL` to the deployed API. The included `client/vercel.json` rewrites frontend routes to Vite's `index.html`, allowing React Router pages to work after direct URLs and refreshes. Deploy `server` to Render/Railway, configure `MONGODB_URI`, `JWT_SECRET`, `JWT_EXPIRES_IN`, `CLIENT_URL` and `PORT`, and allow the frontend URL in CORS. Use MongoDB Atlas for production and run `npm run seed` only against a non-production demo database.
 
 ## Technical decisions and next steps
 
